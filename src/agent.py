@@ -17,8 +17,13 @@ class KnowledgeBaseAgent:
         self.store = store
         self.llm_fn = llm_fn
 
-    def answer(self, question: str, top_k: int = 3) -> str:
+    def answer(self, question: str, top_k: int = 3, min_score: float | None = None) -> str:
         results = self.store.search(question, top_k=top_k)
+        if min_score is not None:
+            results = [r for r in results if r["score"] >= min_score]
+        if not results:
+            # Honest uncertainty beats a confident but ungrounded answer.
+            return "I could not find relevant information in the knowledge base to answer this question."
         context = "\n\n".join(r["content"] for r in results)
         prompt = (
             "You are a helpful assistant. Answer the question using only the "

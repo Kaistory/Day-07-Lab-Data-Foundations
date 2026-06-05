@@ -94,14 +94,25 @@ class RecursiveChunker:
 
         separator, *rest = remaining_separators
         chunks: list[str] = []
+        buffer = ""  # accumulate small adjacent pieces toward chunk_size
         for piece in current_text.split(separator):
             if not piece:
                 continue
-            if len(piece) <= self.chunk_size:
-                chunks.append(piece)
-            else:
-                # Piece still too big — try the next, finer separator.
+            if len(piece) > self.chunk_size:
+                # Piece still too big — flush, then recurse on a finer separator.
+                if buffer:
+                    chunks.append(buffer)
+                    buffer = ""
                 chunks.extend(self._split(piece, rest))
+                continue
+            candidate = f"{buffer}{separator}{piece}" if buffer else piece
+            if len(candidate) <= self.chunk_size:
+                buffer = candidate  # keep merging
+            else:
+                chunks.append(buffer)  # buffer is non-empty here
+                buffer = piece
+        if buffer:
+            chunks.append(buffer)
         return chunks
 
 

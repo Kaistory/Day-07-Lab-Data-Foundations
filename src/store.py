@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from .chunking import _dot
+from .chunking import compute_similarity
 from .embeddings import _mock_embed
 from .models import Document
 
@@ -40,14 +40,16 @@ class EmbeddingStore:
             self._use_chroma = False
             self._collection = None
 
-    def _make_record(self, doc: Document) -> dict[str, Any]:
+    def _make_record(self, doc: Document, embedding: list[float] | None = None) -> dict[str, Any]:
         metadata = dict(doc.metadata or {})
         metadata.setdefault("doc_id", doc.id)
+        if embedding is None:
+            embedding = self._embedding_fn(doc.content)
         record = {
             "id": f"{doc.id}#{self._next_index}",
             "doc_id": doc.id,
             "content": doc.content,
-            "embedding": list(self._embedding_fn(doc.content)),
+            "embedding": list(embedding),
             "metadata": metadata,
         }
         self._next_index += 1
@@ -61,7 +63,7 @@ class EmbeddingStore:
                 "doc_id": rec["doc_id"],
                 "content": rec["content"],
                 "metadata": rec["metadata"],
-                "score": _dot(query_embedding, rec["embedding"]),
+                "score": compute_similarity(query_embedding, rec["embedding"]),
             }
             for rec in records
         ]
@@ -75,8 +77,18 @@ class EmbeddingStore:
         For ChromaDB: use collection.add(ids=[...], documents=[...], embeddings=[...])
         For in-memory: append dicts to self._store
         """
-        for doc in docs:
-            record = self._make_record(doc)
+        if not docs:
+            return
+
+        # Batch-embed in one shot when the backend supports it (cheaper API use).
+        embed_batch = getattr(self._embedding_fn, "embed_batch", None)
+        if embed_batch is not None:
+            embeddings = embed_batch([doc.content for doc in docs])
+        else:
+            embeddings = [self._embedding_fn(doc.content) for doc in docs]
+
+        for doc, embedding in zip(docs, embeddings):
+            record = self._make_record(doc, embedding)
             self._store.append(record)
             if self._use_chroma and self._collection is not None:
                 try:

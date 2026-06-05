@@ -1,3 +1,4 @@
+
 # Báo Cáo Lab 7: Embedding & Vector Store
 
 **Họ tên:** [Tên sinh viên]

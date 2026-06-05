@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { apiClient } from '../services/apiClient';
 import { AskResponse } from '../models/types';
+import { ScoreRing } from './ScoreRing';
 import '../styles/chatbot.css';
 
 export function Chatbot({
@@ -22,7 +23,7 @@ export function Chatbot({
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, loading]);
 
   useEffect(() => {
     if (initialData) {
@@ -95,16 +96,25 @@ export function Chatbot({
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   return (
     <div className="chatbot">
       <div className="chatbot-header">
-        <h2>💬 Hỏi về Luật An ninh Mạng</h2>
+        <h2>
+          <span>💬</span> Hỏi về Luật An ninh Mạng
+        </h2>
       </div>
 
       <div className="messages-container">
         {messages.length === 0 && (
           <div className="empty-chat">
-            <p>👋 Xin chào! Hãy hỏi tôi về Luật An ninh Mạng 116/2025</p>
+            <p>👋 Xin chào! Hãy hỏi tôi bất kỳ câu hỏi nào về Luật An ninh Mạng 116/2025.</p>
           </div>
         )}
 
@@ -114,7 +124,7 @@ export function Chatbot({
               <div className="message-content">
                 <p>{msg.content}</p>
                 <span className="message-time">
-                  {msg.timestamp.toLocaleTimeString('vi-VN')}
+                  {msg.timestamp.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             )}
@@ -124,33 +134,33 @@ export function Chatbot({
                 <div className="answer-box">
                   <div className="answer-meta">
                     <span className="meta-badge">🤖 {msg.backend || 'mock'}</span>
-                    <span className="meta-badge">🔪 {msg.chunking || 'recursive'}</span>
+                    <span className="meta-badge">✂️ {msg.chunking || 'recursive'}</span>
                   </div>
                   <p>{msg.content}</p>
 
                   {msg.citations && msg.citations.length > 0 && (
                     <div className="citations">
-                      <p className="citations-title">📌 Nguồn:</p>
-                      {msg.citations.map((cite, i) => (
-                        <div key={i} className="citation-item">
-                          <span className="citation-label">{cite.label}</span>
-                          <span className="citation-score">
-                            Score: {cite.score.toFixed(4)}
-                          </span>
-                        </div>
-                      ))}
+                      <p className="citations-title">📌 Nguồn tham khảo</p>
+                      <div className="citations-grid">
+                        {msg.citations.map((cite, i) => (
+                          <div key={i} className="citation-item">
+                            <ScoreRing score={cite.score} />
+                            <span className="citation-label">{cite.label}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
 
                   {!msg.grounded && msg.topScore !== undefined && (
                     <div className="warning">
-                      ⚠️ Độ tin cậy thấp (Score: {msg.topScore.toFixed(4)})
+                      <span>⚠️</span> Câu trả lời có độ tin cậy thấp (Score: {msg.topScore.toFixed(4)}). Có thể thông tin không nằm trong ngữ cảnh.
                     </div>
                   )}
                 </div>
 
                 <span className="message-time">
-                  {msg.timestamp.toLocaleTimeString('vi-VN')}
+                  {msg.timestamp.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             )}
@@ -165,26 +175,40 @@ export function Chatbot({
 
         {loading && (
           <div className="message message-loading">
-            <div className="loading-spinner">⌛ Đang xử lý...</div>
+            <div className="message-content">
+              <div className="loading-spinner">
+                <div className="typing-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                Đang tìm câu trả lời...
+              </div>
+            </div>
           </div>
         )}
 
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="input-form">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Hỏi câu hỏi của bạn..."
-          disabled={loading}
-          className="input-field"
-        />
-        <button type="submit" disabled={loading} className="send-button">
-          {loading ? 'Đang gửi...' : '➤ Gửi'}
-        </button>
-      </form>
+      <div className="input-container">
+        <form onSubmit={handleSubmit} className="input-form">
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Hỏi câu hỏi của bạn..."
+            disabled={loading}
+            className="input-field"
+            rows="1"
+          />
+          <button type="submit" disabled={loading || !input.trim()} className="send-button" title="Gửi">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+            </svg>
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

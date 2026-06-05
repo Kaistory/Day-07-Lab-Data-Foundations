@@ -1,0 +1,17 @@
+.score-ring {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-ring svg {
+  display: block;
+}
+
+.score-ring-text {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}

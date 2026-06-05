@@ -20,6 +20,12 @@ src_w_solution/
 
 # Runtime / generated
 qa_log.jsonl
+chroma_db/
+
+# Agent / tooling artifacts
+.claude/
+frontend/.playwright-mcp/
+frontend/ui-test-*.png
 
 # Large source PDF (text already extracted to data/luat116*.md/.txt)
 data/pdf/

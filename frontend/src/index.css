@@ -1,3 +1,44 @@
+:root {
+  /* Colors - Warm Sidebar */
+  --color-sidebar-bg: #1A1A2E;
+  --color-sidebar-text: #FFFEF5;
+  --color-sidebar-border: #1E293B;
+  --color-sidebar-hover: #1E293B;
+
+  /* Colors - Main Chat Area */
+  --color-main-bg: #F8FAFC;
+  --color-chat-bg: #FFFFFF;
+  --color-text-dark: #0F172A;
+  --color-text-muted: #64748B;
+
+  /* Colors - Warm & Playful */
+  --color-primary: #FF6B6B; /* Coral Red */
+  --color-primary-light: #FFE5CC;
+  --color-primary-gradient: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+  --color-accent: #FFB84D; /* Warm Amber */
+  --color-accent-light: #FFF5E6;
+  --color-success: #4ECDC4; /* Vibrant Teal */
+  --color-warning: #FFD699; /* Warm Orange */
+  --color-danger: #D32F2F; /* Warm Red */
+  --color-gradient-warm: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+  --color-highlight: #F0E68C;
+
+  /* Borders & Shadows */
+  --border-light: #E2E8F0;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 15px rgba(255, 107, 107, 0.3);
+
+  /* Spacing Scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -11,24 +52,65 @@ html, body, #root {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  color: #1a1a1a;
-  background: white;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--color-text-dark);
+  background: var(--color-main-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
   margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+h2 {
+  margin: 0;
+  font-size: 24px;
   font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+h4, h5, h6 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
 }
 
 p {
   margin: 0;
+  line-height: 1.8;
 }
 
-button {
+button, input, select, textarea {
   font-family: inherit;
 }
 
-input, select, textarea {
-  font-family: inherit;
+/* Custom Scrollbar for global usage */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 107, 0.4);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 107, 0.6);
 }

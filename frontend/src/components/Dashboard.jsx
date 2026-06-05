@@ -41,7 +41,7 @@ export function Dashboard({
     <div className="dashboard">
       <div className="dashboard-header">
         <h2>📚 Luật An ninh Mạng</h2>
-        <p className="subtitle">116/2025</p>
+        <p className="subtitle">Phiên bản 116/2025</p>
       </div>
 
       <div className="dashboard-section">
@@ -109,7 +109,7 @@ export function Dashboard({
       </div>
 
       <div className="dashboard-section history">
-        <h3>📋 Lịch sử</h3>
+        <h3>📋 Lịch sử Chat</h3>
         <div className="history-list">
           {history.length === 0 ? (
             <p className="empty-state">Chưa có lịch sử</p>
@@ -122,7 +122,7 @@ export function Dashboard({
                 title={entry.question}
               >
                 <span className="history-question">
-                  {entry.question.substring(0, 30)}...
+                  {entry.question}
                 </span>
                 <span className="history-time">
                   {new Date(entry.time).toLocaleTimeString('vi-VN')}

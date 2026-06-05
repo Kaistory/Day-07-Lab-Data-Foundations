@@ -46,6 +46,7 @@ from src import (
 load_dotenv()
 
 DATA_DIR = Path("data")
+CHROMA_DIR = "./chroma_db"  # ChromaDB lưu bền ra thư mục này
 CHUNK_SIZE = 500
 DEFAULT_CHUNKING = "recursive"
 LOG_FILE = Path("qa_log.jsonl")  # mỗi dòng là 1 bản ghi JSON (câu hỏi + trả lời + score)
@@ -141,15 +142,12 @@ class ChromaStore:
         import chromadb
 
         self._embedding_fn = embedding_fn
-        self._client = chromadb.EphemeralClient()
-        try:
-            self._client.delete_collection(collection_name)  # dựng mới mỗi lần
-        except Exception:
-            pass
-        self._col = self._client.create_collection(
+        # PersistentClient: lưu bền ra ổ đĩa (CHROMA_DIR), sống qua restart.
+        self._client = chromadb.PersistentClient(path=CHROMA_DIR)
+        self._col = self._client.get_or_create_collection(
             name=collection_name, metadata={"hnsw:space": "cosine"}
         )
-        self._next = 0
+        self._next = self._col.count()  # tiếp tục đánh id từ số đã có
 
     def add_documents(self, docs: list[Document]) -> None:
         if not docs:
@@ -197,6 +195,8 @@ class ChromaStore:
 def build_store(embedder, chunker, store_type: str = "memory", collection: str = "luat116"):
     if store_type == "chroma":
         store = ChromaStore(collection, embedder)
+        if store.get_collection_size() > 0:
+            return store  # đã có dữ liệu lưu bền trên đĩa → không embed/nạp lại
     else:
         store = EmbeddingStore(collection_name=collection, embedding_fn=embedder)
     docs: list[Document] = []

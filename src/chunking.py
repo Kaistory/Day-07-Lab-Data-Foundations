@@ -257,11 +257,11 @@ class ChunkingStrategyComparator:
 
         def _calculate_stats(chunks: list[str]) -> dict:
             if not chunks:
-                return {"total_chunks": 0, "avg_length": 0.0, "max_length": 0, "min_length": 0, "chunks": []}
+                return {"count": 0, "avg_length": 0.0, "max_length": 0, "min_length": 0, "chunks": []}
             
             lengths = [len(c) for c in chunks]
             return {
-                "total_chunks": len(chunks),
+                "count": len(chunks),
                 "avg_length": round(sum(lengths) / len(chunks), 2),
                 "max_length": max(lengths),
                 "min_length": min(lengths),
@@ -269,7 +269,7 @@ class ChunkingStrategyComparator:
             }
 
         return {
-            "fixed_size_chunking": _calculate_stats(fixed_size_result),
-            "sentence_chunking": _calculate_stats(sentence_result),
-            "recursive_chunking": _calculate_stats(recursive_result)
+            "fixed_size": _calculate_stats(fixed_size_result),
+            "by_sentences": _calculate_stats(sentence_result),
+            "recursive": _calculate_stats(recursive_result)
         }

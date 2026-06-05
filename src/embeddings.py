@@ -58,4 +58,23 @@ class OpenAIEmbedder:
         return [float(value) for value in response.data[0].embedding]
 
 
+class GeminiEmbedder:
+    """Google Gemini embeddings API-backed embedder."""
+
+    def __init__(self, model_name: str = "gemini-embedding-2") -> None:
+        from google import genai
+        import os
+        
+        self.model_name = model_name
+        self._backend_name = model_name
+        self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+
+    def __call__(self, text: str) -> list[float]:
+        result = self.client.models.embed_content(
+            model=self.model_name,
+            contents=text,
+        )
+        return [float(value) for value in result.embeddings[0].values]
+
+
 _mock_embed = MockEmbedder()

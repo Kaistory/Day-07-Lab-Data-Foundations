@@ -155,3 +155,112 @@ class ChunkingStrategyComparator:
                 "chunks": chunks,
             }
         return comparison
+
+
+def _split_on_boundary(text: str, pattern: str, max_size: int) -> list[str]:
+    """Split right before each line matching `pattern`; recurse-split oversized pieces.
+
+    Shared helper for the structure-aware chunkers below.
+    """
+    if not text.strip():
+        return []
+    fallback = RecursiveChunker(chunk_size=max_size)
+    chunks: list[str] = []
+    for part in re.split(pattern, text):
+        part = part.strip()
+        if not part:
+            continue
+        if len(part) <= max_size:
+            chunks.append(part)
+        else:
+            chunks.extend(fallback.chunk(part))
+    return chunks or [text.strip()]
+
+
+class ArticleChunker:
+    """Split a legal document by 'Điều' (article) — each chunk is one whole article.
+
+    Best fit for Vietnamese law: 'Điều' is the natural semantic unit, so retrieval
+    lands on a complete, self-contained article. Oversized articles fall back to
+    RecursiveChunker.
+    """
+
+    def __init__(self, max_size: int = 1500) -> None:
+        self.max_size = max_size
+
+    def chunk(self, text: str) -> list[str]:
+        return _split_on_boundary(text, r"(?m)(?=^\s*#{0,6}\s*Điều\s+\d+\b)", self.max_size)
+
+
+class ChapterChunker:
+    """Split by 'Chương' (chapter) — coarse chunks, one chapter each.
+
+    Useful when a question needs broad context spanning several articles.
+    """
+
+    def __init__(self, max_size: int = 4000) -> None:
+        self.max_size = max_size
+
+    def chunk(self, text: str) -> list[str]:
+        return _split_on_boundary(text, r"(?m)(?=^\s*#{0,6}\s*Chương\s+[IVXLC0-9]+\b)", self.max_size)
+
+
+class ClauseChunker:
+    """Split by 'Khoản' — lines beginning with a number then a dot (e.g. '1.', '2.').
+
+    Finer than ArticleChunker: each numbered clause becomes its own chunk, good for
+    pinpoint questions about a specific clause.
+    """
+
+    def __init__(self, max_size: int = 800) -> None:
+        self.max_size = max_size
+
+    def chunk(self, text: str) -> list[str]:
+        return _split_on_boundary(text, r"(?m)(?=^\s*\d+\.\s)", self.max_size)
+
+
+class MarkdownHeaderChunker:
+    """Split by Markdown headings (#, ##, ###) — each chunk = a heading + its body.
+
+    Generic structural strategy for any markdown document.
+    """
+
+    def __init__(self, max_size: int = 1500) -> None:
+        self.max_size = max_size
+
+    def chunk(self, text: str) -> list[str]:
+        return _split_on_boundary(text, r"(?m)(?=^\s*#{1,6}\s)", self.max_size)
+
+
+class ParagraphChunker:
+    """Split by blank-line paragraphs, merging consecutive paragraphs toward max_size.
+
+    Keeps related paragraphs together while bounding chunk length.
+    """
+
+    def __init__(self, max_size: int = 600) -> None:
+        self.max_size = max_size
+
+    def chunk(self, text: str) -> list[str]:
+        paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
+        fallback = RecursiveChunker(chunk_size=self.max_size)
+        chunks: list[str] = []
+        buffer = ""
+        for para in paragraphs:
+            if len(para) > self.max_size:
+                # Đoạn đơn quá dài — flush rồi tách nhỏ bằng RecursiveChunker.
+                if buffer:
+                    chunks.append(buffer)
+                    buffer = ""
+                chunks.extend(fallback.chunk(para))
+                continue
+            candidate = f"{buffer}\n\n{para}" if buffer else para
+            if len(candidate) <= self.max_size:
+                buffer = candidate
+            else:
+                if buffer:
+                    chunks.append(buffer)
+                buffer = para
+        if buffer:
+            chunks.append(buffer)
+        return chunks

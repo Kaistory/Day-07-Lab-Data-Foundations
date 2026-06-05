@@ -196,10 +196,10 @@ def main() -> int:
     while i < len(args):
         arg = args[i]
         if arg == "--chunk":
-            chunk_size = chunk_size or 300
+            chunk_size = chunk_size or 500
         elif arg == "--chunk-size":
             i += 1
-            chunk_size = int(args[i]) if i < len(args) else 300
+            chunk_size = int(args[i]) if i < len(args) else 500
         else:
             rest.append(arg)
         i += 1

@@ -18,27 +18,49 @@ class FixedSizeChunker:
         - If text is shorter than chunk_size, return [text].
     """
 
-    def __init__(self, chunk_size: int = 500, overlap: int = 50) -> None:
+    def __init__(
+        self,
+        chunk_size: int = 500,
+        overlap: int = 50,
+        respect_boundaries: bool = False,
+    ) -> None:
         if chunk_size <= 0:
             raise ValueError("chunk_size must be greater than 0")
         if overlap < 0 or overlap >= chunk_size:
             raise ValueError("overlap must satisfy 0 <= overlap < chunk_size")
         self.chunk_size = chunk_size
         self.overlap = overlap
+        self.respect_boundaries = respect_boundaries
 
     def chunk(self, text: str) -> list[str]:
         if not text:
             return []
         if len(text) <= self.chunk_size:
             return [text]
+        return self._chunk_plain(text)
 
-        step = self.chunk_size - self.overlap
+    def _chunk_plain(self, text: str) -> list[str]:
+        if len(text) <= self.chunk_size:
+            return [text]
+
         chunks: list[str] = []
-        for start in range(0, len(text), step):
-            chunk = text[start : start + self.chunk_size]
+        start = 0
+        while start < len(text):
+            hard_end = min(start + self.chunk_size, len(text))
+            end = hard_end
+            if self.respect_boundaries and hard_end < len(text):
+                minimum_end = start + int(self.chunk_size * 0.65)
+                for separator in ("\n\n", "\n", ". ", "; ", " "):
+                    boundary = text.rfind(separator, minimum_end, hard_end)
+                    if boundary >= minimum_end:
+                        end = boundary + len(separator)
+                        break
+
+            chunk = text[start:end]
             chunks.append(chunk)
-            if start + self.chunk_size >= len(text):
+            if end >= len(text):
                 break
+            start = max(start + 1, end - self.overlap)
         return chunks
 
 
@@ -50,22 +72,37 @@ class SentenceChunker:
     Strip extra whitespace from each chunk.
     """
 
-    def __init__(self, max_sentences_per_chunk: int = 3) -> None:
+    SENTENCE_BOUNDARY = re.compile(r"(?<=[.!?])(?:[ \t]+|\n+)")
+
+    def __init__(
+        self,
+        max_sentences_per_chunk: int = 3,
+        overlap_sentences: int = 0,
+    ) -> None:
         self.max_sentences_per_chunk = max(1, max_sentences_per_chunk)
+        if overlap_sentences < 0 or overlap_sentences >= self.max_sentences_per_chunk:
+            raise ValueError(
+                "overlap_sentences must satisfy "
+                "0 <= overlap_sentences < max_sentences_per_chunk"
+            )
+        self.overlap_sentences = overlap_sentences
 
     def chunk(self, text: str) -> list[str]:
         if not text or not text.strip():
             return []
-
         sentences = [
             sentence.strip()
-            for sentence in re.split(r"(?<=[.!?])(?:[ \t]+|\n+)", text.strip())
+            for sentence in self.SENTENCE_BOUNDARY.split(text.strip())
             if sentence.strip()
         ]
-        return [
-            " ".join(sentences[index : index + self.max_sentences_per_chunk])
-            for index in range(0, len(sentences), self.max_sentences_per_chunk)
-        ]
+        step = self.max_sentences_per_chunk - self.overlap_sentences
+        chunks: list[str] = []
+        for index in range(0, len(sentences), step):
+            group = sentences[index : index + self.max_sentences_per_chunk]
+            if index and len(group) <= self.overlap_sentences:
+                break
+            chunks.append(" ".join(group))
+        return chunks
 
 
 class RecursiveChunker:
@@ -78,7 +115,11 @@ class RecursiveChunker:
 
     DEFAULT_SEPARATORS = ["\n\n", "\n", ". ", " ", ""]
 
-    def __init__(self, separators: list[str] | None = None, chunk_size: int = 500) -> None:
+    def __init__(
+        self,
+        separators: list[str] | None = None,
+        chunk_size: int = 500,
+    ) -> None:
         if chunk_size <= 0:
             raise ValueError("chunk_size must be greater than 0")
         self.separators = self.DEFAULT_SEPARATORS if separators is None else list(separators)

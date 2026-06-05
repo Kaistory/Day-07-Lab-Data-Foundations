@@ -10,6 +10,7 @@ __pycache__/
 .venv/
 venv/
 chroma_data/
+work/
 
 # OS
 .DS_Store

@@ -123,9 +123,18 @@ def document_metadata(path: Path) -> dict[str, Any]:
 
 def make_strategies(embedder: OpenAIEmbedder) -> dict[str, Any]:
     return {
-        "fixed": FixedSizeChunker(chunk_size=1200, overlap=150),
-        "sentence": SentenceChunker(max_sentences_per_chunk=5),
-        "recursive": RecursiveChunker(chunk_size=1200),
+        "fixed": FixedSizeChunker(
+            chunk_size=1200,
+            overlap=100,
+            respect_boundaries=True,
+        ),
+        "sentence": SentenceChunker(
+            max_sentences_per_chunk=6,
+            overlap_sentences=1,
+        ),
+        "recursive": RecursiveChunker(
+            chunk_size=900,
+        ),
         "semantic": SemanticChunker(
             embedding_fn=embedder,
             similarity_threshold=0.20,
@@ -298,9 +307,18 @@ def evaluate_strategy(
 
 def strategy_parameters(strategy_name: str) -> dict[str, Any]:
     return {
-        "fixed": {"chunk_size": 1200, "overlap": 150},
-        "sentence": {"max_sentences_per_chunk": 5},
-        "recursive": {"chunk_size": 1200},
+        "fixed": {
+            "chunk_size": 1200,
+            "overlap": 100,
+            "respect_boundaries": True,
+        },
+        "sentence": {
+            "max_sentences_per_chunk": 6,
+            "overlap_sentences": 1,
+        },
+        "recursive": {
+            "chunk_size": 900,
+        },
         "semantic": {"similarity_threshold": 0.20, "max_chunk_size": 1500},
         "document": {"chunk_size": 1500, "boundaries": ["Chương", "Mục", "Điều"]},
     }[strategy_name]

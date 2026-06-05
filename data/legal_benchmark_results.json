@@ -158,14 +158,15 @@
       "strategy": "fixed",
       "parameters": {
         "chunk_size": 1200,
-        "overlap": 150
+        "overlap": 100,
+        "respect_boundaries": true
       },
-      "chunk_count": 79,
-      "avg_chunk_length": 1249.42,
-      "max_chunk_length": 1471,
-      "collection_name": "legal-fixed-text-embedding-3-small-2afb126989d0",
+      "chunk_count": 86,
+      "avg_chunk_length": 1117.76,
+      "max_chunk_length": 1423,
+      "collection_name": "legal-fixed-text-embedding-3-small-e61ba7328884",
       "top3_recall": 1.0,
-      "mrr": 0.9,
+      "mrr": 1.0,
       "retrieval_score": 10,
       "queries": [
         {
@@ -179,27 +180,27 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.619615,
+              "score": 0.635194,
               "relevant": true,
               "source": "81-btc.md",
-              "article": "Điều 2. Giải thích từ ngữ",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 2. Giải thích từ ngữ] ợng áp dụng ### 1. Phạm vi điều chỉnh Thông tư này quy định việc quản lý, sử dụng tài khoản thanh toán của Kho bạc Nhà nước mở tại Ngân hàng Nhà nước Việt Nam và các ngân hàng thương mại. ### 2. Đối tượng áp dụng a) Kho bạc Nhà nước, bao gồm: Kho"
+              "article": "Điều 3. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại Ngân hàng Nhà nước Việt Nam",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 3. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại Ngân hàng Nhà nước Việt Nam] để đối chiếu số liệu thanh toán trong ngày làm việc giữa Kho bạc Nhà nước và ngân hàng thương mại. Giờ COT được quy định là lúc 16 giờ của ngày làm việc theo giờ Việt Nam;"
             },
             {
               "rank": 2,
-              "score": 0.544912,
+              "score": 0.578762,
               "relevant": false,
               "source": "81-btc.md",
-              "article": "Điều 3. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại Ngân hàng Nhà nước Việt Nam",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 3. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại Ngân hàng Nhà nước Việt Nam] làm việc theo giờ Việt Nam; trường hợp cần thiết, Kho bạc Nhà nước phối hợp với ngân hàng thương mại để điều chỉnh giờ COT cho phù hợp. # Chương II # QUY ĐỊNH CỤ THỂ ## Đi"
+              "article": "Điều 1. Phạm vi điều chỉnh, đối tượng áp dụng",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 1. Phạm vi điều chỉnh, đối tượng áp dụng] g I # QUY ĐỊNH CHUNG ## Điều 1. Phạm vi điều chỉnh, đối tượng áp dụng ### 1. Phạm vi điều chỉnh Thông tư này quy định việc quản lý, sử dụng tài khoản thanh toán của Kho bạc Nhà nước mở tại Ngân hàng Nhà nước Việt Nam và các ng"
             },
             {
               "rank": 3,
-              "score": 0.517356,
+              "score": 0.506025,
               "relevant": false,
               "source": "81-btc.md",
-              "article": "",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] tắc trao đổi và lưu trữ dữ liệu điện tử. 5. Nguyên tắc đối chiếu và xác nhận số liệu. 6. Nguyên tắc xử lý sai sót và tra soát. 7. Nguyên tắc bảo mật thông tin. 8. Nguyên tắc về phí dịch vụ và các khoản chi phí liên quan (nếu có). ### IV. Thời điểm Cut Off Time (COT) * Quy đ"
+              "article": "Điều 5. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán phân tán (tiếp)",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 5. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán phân tán (tiếp)] ngày 05 tháng 4 năm 2016 của Chính phủ quy định chế độ quản lý ngân quỹ nhà nước (được sửa đổi, b"
             }
           ]
         },
@@ -212,27 +213,27 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.701075,
+              "score": 0.711028,
               "relevant": true,
               "source": "81-btc.md",
               "article": "Điều 10. Tổ chức thực hiện",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 10. Tổ chức thực hiện] khi được sửa đổi, bổ sung hoặc thay thế cho phù hợp với quy định tại Thông tư này. ## Điều 10. Tổ chức thực hiện ### 1. Kho bạc Nhà nước có trách nhiệm: a) Tổ chức triển khai thực hiện Thông tư này trong toàn hệ thống Kho bạc Nhà nước. b) Phối h"
+              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 10. Tổ chức thực hiện] a đổi, bổ sung hoặc thay thế thì thực hiện theo văn bản sửa đổi, bổ sung hoặc thay thế đó. ### 4. Các thỏa thuận thanh toán song phương điện tử đã ký kết giữa Kho bạc Nhà nước và ngân hàng thương mại trước ngày Thông tư này có hiệu lực được tiếp"
             },
             {
               "rank": 2,
-              "score": 0.691426,
+              "score": 0.676852,
               "relevant": false,
               "source": "81-btc.md",
-              "article": "Điều 9. Hiệu lực thi hành",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 9. Hiệu lực thi hành] ề phát sinh trong quá trình thanh toán. ### 5. Thực hiện trách nhiệm thanh toán khoản tiền chậm hạch toán theo quy định tại Thông tư này và thỏa thuận thanh toán song phương điện tử. ### 6. Thực hiện các trách nhiệm khác theo quy định của pháp lu"
+              "article": "Điều 6. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán tập trung",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 6. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán tập trung] hanh toán song phương điện tử theo mô hình tài khoản thanh toán phân tán (tiếp) ### 4. Thanh toán Kho b"
             },
             {
               "rank": 3,
-              "score": 0.659202,
-              "relevant": false,
+              "score": 0.676351,
+              "relevant": true,
               "source": "81-btc.md",
-              "article": "Điều 4. Ngân hàng thương mại nơi Kho bạc Nhà nước mở tài khoản thanh toán",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 4. Ngân hàng thương mại nơi Kho bạc Nhà nước mở tài khoản thanh toán] thanh toán qua tài khoản thanh toán của Kho bạc Nhà nước (Trung ương) tại Sở Giao dịch Ngân hàng Nhà nước Việt Nam theo quy định của Thông tư số 08/2024/TT-NHNN ngày 25 tháng 6 năm 2024 của Thống đố"
+              "article": "",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] ổi sang mô hình tài khoản thanh toán tập trung chậm nhất đến ngày **30 tháng 6 năm 2028**. ### 2. Các ngân hàng thương mại nơi Kho bạc Nhà nước mở tài khoản thanh toán có trách nhiệm phối hợp với Kho bạc Nhà nước để tổ chức triển khai thực hiện Thông tư này; nâng cấp hệ thố"
             }
           ]
         },
@@ -245,27 +246,27 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.664817,
+              "score": 0.643473,
               "relevant": true,
               "source": "luat116_ch03.md",
-              "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] Trẻ em có quyền được tiếp cận thông tin, tham gia hoạt động xã hội, vui chơi, giải trí, bảo vệ bí mật cá nhân, đời sống riêng tư và các quyền khác trên không gian mạng theo quy định của pháp luật. 2. Trẻ em sử dụng dịch vụ giá trị gia tăng trên không gian mạng th"
+              "article": "Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng] hiết bị điện tử trước khi đưa vào sử dụng trong hệ thống thông tin quan trọng về an ninh quốc gia; c) Giám sát an ninh mạng đối với hệ thống thông tin quan trọng về an ninh quốc gia nhằm phát hiện, xử lý"
             },
             {
               "rank": 2,
-              "score": 0.539323,
+              "score": 0.532665,
               "relevant": false,
               "source": "luat116_ch07.md",
-              "article": "Điều 41. Trách nhiệm của doanh nghiệp cung cấp dịch vụ trên không gian mạng",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 41. Trách nhiệm của doanh nghiệp cung cấp dịch vụ trên không gian mạng] i cơ quan chuyên trách của Bộ Công an hoặc Bộ Quốc phòng. 2. Chủ quản hệ thống thông tin có sử dụng ngân sách nhà nước ngoài trách nhiệm quy định tại khoản 1 Điều này thì có trách nhiệm"
+              "article": "Điều 40. Trách nhiệm của chủ quản hệ thống thông tin trong bảo vệ an ninh mạng",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 40. Trách nhiệm của chủ quản hệ thống thông tin trong bảo vệ an ninh mạng] ông tác bảo vệ an ninh mạng; phối hợp với Bộ Công an thực hiện quản lý nhà nước về an ninh mạng. ## Điều 40. Trách nhiệm của chủ quản hệ thống thông tin trong bảo vệ an ninh mạng 1. "
             },
             {
               "rank": 3,
-              "score": 0.52071,
+              "score": 0.520888,
               "relevant": false,
-              "source": "luat116_ch03.md",
-              "article": "Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng] oạn thảo, lưu giữ trên máy tính, thiết bị khác hoặc trao đổi trên không gian mạng theo quy định của pháp luật về bảo vệ bí mật nhà nước. # 4. Bộ Công an có trách nhiệm sau đây, tùy trường hợp quy định tạ"
+              "source": "luat116_ch07.md",
+              "article": "Điều 41. Trách nhiệm của doanh nghiệp cung cấp dịch vụ trên không gian mạng",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 41. Trách nhiệm của doanh nghiệp cung cấp dịch vụ trên không gian mạng] ch về an ninh mạng. # Điều 41. Trách nhiệm của doanh nghiệp cung cấp dịch vụ trên không gian mạng 1. Tuân thủ quy định của pháp luật về an ninh mạng. 2. Cảnh báo khả năng mất an ninh mạ"
             }
           ]
         },
@@ -274,31 +275,31 @@
           "query": "Luật An ninh mạng số 116/2025 có hiệu lực thi hành từ ngày nào?",
           "gold_answer": "Luật có hiệu lực thi hành từ ngày 01 tháng 7 năm 2026.",
           "metadata_filter": null,
-          "relevant_rank": 2,
+          "relevant_rank": 1,
           "results": [
             {
               "rank": 1,
-              "score": 0.665606,
-              "relevant": false,
-              "source": "luat116_ch08.md",
-              "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] cấp độ theo quy định của Luật này. 2. Các loại giấy phép kinh doanh sản phẩm, dịch vụ an toàn thông tin mạng, mặt mát dân sự theo quy định của Luật An toàn thông tin mạng số 86/2015/QH13 đã được sửa đổi, bổ sung một số điều theo Luật số 35/2018/QH14. 3. Các sản p"
-            },
-            {
-              "rank": 2,
-              "score": 0.656416,
+              "score": 0.675573,
               "relevant": true,
               "source": "luat116_ch08.md",
               "article": "Điều 44. Hiệu lực thi hành",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 44. Hiệu lực thi hành] toàn thông tin” bằng cụm từ “an ninh” tại điểm a khoản 3 Điều 7 của Luật Tín ngưỡng, tôn giáo số 28/2023/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 84/2025/QH15. 11. Bài bỏ cụm từ “an toàn thông tin mạng;” tại điểm d khoản"
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 44. Hiệu lực thi hành] d) Bài bỏ cụm từ “an toàn thông tin mạng,” tại điểm d khoản 1 Điều 42 và điểm a khoản 1 Điều 47. 9. Thay thế cụm từ “an toàn thông tin mạng” bằng cụm từ “an ninh mạng” tại điểm b khoản 2 Điều 12 của Luật Thuế thu nhập doanh nghiệp số "
+            },
+            {
+              "rank": 2,
+              "score": 0.650062,
+              "relevant": false,
+              "source": "luat116_ch08.md",
+              "article": "",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] àn thông tin mạng số 86/2015/QH13 đã được sửa đổi, bổ sung một số điều theo Luật số 35/2018/QH14. 3. Các sản phẩm, dịch vụ, giải pháp, phương tiện kỹ thuật bảo đảm an toàn thông tin mạng theo quy định của Luật An toàn thông tin mạng số 86/2015/QH13 đã được sửa đổ"
             },
             {
               "rank": 3,
-              "score": 0.59141,
+              "score": 0.621601,
               "relevant": false,
-              "source": "luat116_ch04.md",
-              "article": "Điều 23. Triển khai hoạt động bảo vệ an ninh mạng trong cơ quan nhà nước, tổ chức chính trị, tổ chức chính trị - xã hội ở trung ương và địa phương",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 23. Triển khai hoạt động bảo vệ an ninh mạng trong cơ quan nhà nước, tổ chức chính trị, tổ chức chính trị - xã hội ở trung ương và địa phương] # Luật An ninh mạng 116/2025 — Chương IV: HOẠT ĐỘNG BẢO VỆ AN NINH MẠNG # Chương IV ## HOẠT ĐỘNG BẢO VỆ AN NINH MẠ"
+              "source": "luat116_ch08.md",
+              "article": "Điều 45. Điều khoản chuyển tiếp",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 45. Điều khoản chuyển tiếp] 35/2018/QH14; Luật An ninh mạng số 24/2018/QH14 hiệu lực kề từ ngày Luật này có hiệu lực thi hành. # Điều 45. Điều khoản chuyển tiếp 1. Hệ thống thông tin đã được xác định cấp độ theo quy định của Luật An toàn thông tin mạng số 8"
             }
           ]
         },
@@ -311,27 +312,27 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.705288,
+              "score": 0.701764,
               "relevant": true,
               "source": "luat116_ch01.md",
               "article": "Điều 7. Các hành vi bị nghiêm cấm về an ninh mạng",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 7. Các hành vi bị nghiêm cấm về an ninh mạng] năng lực chuyên môn, kỹ thuật trong lĩnh vực an ninh mạng; d) Phòng, chống tội phạm mạng, tội phạm sử dụng công nghệ cao; phối hợp điều tra, xử lý vi phạm pháp luật, tội phạm mạng và tội phạm sử dụng công nghệ c"
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 7. Các hành vi bị nghiêm cấm về an ninh mạng] hội nghị, hội thảo quốc tế và triển khai các chương trình, dự án hợp tác quốc tế về an ninh mạng; # Điều 7. Các hành vi bị nghiêm cấm về an ninh mạng 1. Dăng tải, phát tán thông tin có nội dung sau trên không gi"
             },
             {
               "rank": 2,
-              "score": 0.624598,
+              "score": 0.649755,
               "relevant": false,
               "source": "luat116_ch01.md",
-              "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] ác trên không gian mạng bằng việc sử dụng công nghệ thông tin, phương tiện điện tử để vi phạm pháp luật về an ninh quốc gia, trật tự, an toàn xã hội. 3. Thực hiện tấn công mạng, khủng bố mạng, gián điệp mạng, tội phạm sử dụng công nghệ cao; gây sự cố, tấn công, x"
+              "article": "Điều 11",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 11] trái phép hoặc can thiệp, gây nguy hiểm, tê liệt, phá hoại hệ thống máy tính, hệ thống thông tin. ### Điều 11 Nhật ký hệ thống là tập hợp các bản ghi phản ánh thời gian, người dùng, hoạt động, trạng thái của hệ thống phục vụ cho quản lý, giám sát và bảo"
             },
             {
               "rank": 3,
-              "score": 0.612456,
+              "score": 0.613648,
               "relevant": false,
               "source": "luat116_ch01.md",
-              "article": "Điều 12",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 12] vụ cho quản lý, giám sát và bảo mật hệ thống. ### Điều 12 Tội phạm mạng là hành vi nguy hiểm cho xã hội được quy định trong Bộ luật Hình sự, do cá nhân hoặc tổ chức thực hiện trên không gian mạng bằng việc sử dụng công nghệ thông tin hoặc phương tiện đi"
+              "article": "",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] ng dẫn, xúi giục, lôi kéo, kích động người khác phạm tội hoặc thực hiện hành vi vi phạm pháp luật; k) Thực hiện hành vi khác trên không gian mạng bằng việc sử dụng công nghệ thông tin, phương tiện điện tử để vi phạm pháp luật về an ninh quốc gia, trật tự, an toàn"
             }
           ]
         }
@@ -340,14 +341,15 @@
     {
       "strategy": "sentence",
       "parameters": {
-        "max_sentences_per_chunk": 5
+        "max_sentences_per_chunk": 6,
+        "overlap_sentences": 1
       },
-      "chunk_count": 106,
-      "avg_chunk_length": 811.08,
-      "max_chunk_length": 3907,
-      "collection_name": "legal-sentence-text-embedding-3-small-1d58c3ca12be",
+      "chunk_count": 100,
+      "avg_chunk_length": 991.66,
+      "max_chunk_length": 3910,
+      "collection_name": "legal-sentence-text-embedding-3-small-fe791baee1f3",
       "top3_recall": 1.0,
-      "mrr": 0.8,
+      "mrr": 0.9,
       "retrieval_score": 10,
       "queries": [
         {
@@ -361,15 +363,15 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.72489,
+              "score": 0.722987,
               "relevant": false,
               "source": "81-btc.md",
               "article": "",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] Nguyên tắc về phí dịch vụ và các khoản chi phí liên quan (nếu có). ### IV. Thời điểm Cut Off Time (COT) * Quy định cụ thể thời điểm COT. * Nguyên tắc xử lý các giao dịch phát sinh trước và sau thời điểm COT. * Phương thức thông báo khi thay đổi thời điểm COT."
+              "content_preview": "[Thông tư 81/2025/TT-BTC] Nguyên tắc về phí dịch vụ và các khoản chi phí liên quan (nếu có). ### IV. Thời điểm Cut Off Time (COT) * Quy định cụ thể thời điểm COT. * Nguyên tắc xử lý các giao dịch phát sinh trước và sau thời điểm COT. * Phương thức thông báo khi thay đổi thời điểm COT. ### V."
             },
             {
               "rank": 2,
-              "score": 0.679847,
+              "score": 0.642227,
               "relevant": true,
               "source": "81-btc.md",
               "article": "Điều 3. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại Ngân hàng Nhà nước Việt Nam",
@@ -377,7 +379,7 @@
             },
             {
               "rank": 3,
-              "score": 0.522622,
+              "score": 0.473485,
               "relevant": false,
               "source": "81-btc.md",
               "article": "",
@@ -394,7 +396,7 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.794008,
+              "score": 0.764,
               "relevant": true,
               "source": "81-btc.md",
               "article": "",
@@ -402,19 +404,19 @@
             },
             {
               "rank": 2,
-              "score": 0.672442,
-              "relevant": false,
-              "source": "81-btc.md",
-              "article": "Điều 6. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán tập trung",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 6. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán tập trung] ### 5. Chậm hạch toán Trường hợp ngân hàng thương mại chậm hạch toán các khoản thu ngân sách nhà nước v"
-            },
-            {
-              "rank": 3,
-              "score": 0.671478,
+              "score": 0.674947,
               "relevant": false,
               "source": "81-btc.md",
               "article": "",
               "content_preview": "[Thông tư 81/2025/TT-BTC] Kho bạc Nhà nước thanh toán qua tài khoản thanh toán của Kho bạc Nhà nước (Trung ương) tại Sở Giao dịch Ngân hàng Nhà nước Việt Nam theo quy định của Thông tư số 08/2024/TT-NHNN ngày 25 tháng 6 năm 2024 của Thống đốc Ngân hàng Nhà nước Việt Nam quy định về việc quản lý, vận"
+            },
+            {
+              "rank": 3,
+              "score": 0.667075,
+              "relevant": false,
+              "source": "81-btc.md",
+              "article": "",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] b) Kho bạc Nhà nước khu vực được mở tài khoản thanh toán bằng VND và bằng ngoại tệ (theo loại ngoại tệ phát sinh) tại chi nhánh, phòng giao dịch thuộc cùng ngân hàng thương mại nơi Kho bạc Nhà nước (Trung ương) mở tài khoản thanh toán. ### 2. Nội dung sử dụng tài khoản than"
             }
           ]
         },
@@ -427,7 +429,7 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.651096,
+              "score": 0.649996,
               "relevant": true,
               "source": "luat116_ch03.md",
               "article": "Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng",
@@ -435,7 +437,7 @@
             },
             {
               "rank": 2,
-              "score": 0.558649,
+              "score": 0.559105,
               "relevant": false,
               "source": "luat116_ch07.md",
               "article": "",
@@ -443,11 +445,11 @@
             },
             {
               "rank": 3,
-              "score": 0.542075,
+              "score": 0.531974,
               "relevant": false,
-              "source": "luat116_ch07.md",
+              "source": "luat116_ch03.md",
               "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] Chủ quản hệ thống thông tin có sử dụng ngân sách nhà nước ngoài trách nhiệm quy định tại khoản 1 Điều này thì có trách nhiệm sau đây: a) Có phương án bảo đảm an ninh mạng được cơ quan nhà nước có thẩm quyền thẩm định và an ninh mạng khi thiết lập, mở rộng hoặc nâ"
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] 3. Chủ quản hệ thống thông tin, doanh nghiệp cung cấp dịch vụ trên mạng viễn thông, mạng Internet, các dịch vụ giá trị gia tăng trên không gian mạng có các trách nhiệm sau đây: a) Kiểm soát nội dung thông tin trên hệ thống thông tin hoặc dịch vụ do doanh nghiệp c"
             }
           ]
         },
@@ -460,7 +462,7 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.731374,
+              "score": 0.709112,
               "relevant": true,
               "source": "luat116_ch08.md",
               "article": "",
@@ -468,19 +470,19 @@
             },
             {
               "rank": 2,
-              "score": 0.650229,
+              "score": 0.645335,
               "relevant": false,
               "source": "luat116_ch08.md",
               "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] Luật này được Quốc hội nước Cộng hòa xã hội chủ nghĩa Việt Nam khóa XV, Kỳ họp thứ 10 thông qua ngày 10 tháng 12 năm 2025."
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] Hệ thống thông tin đã được xác định cấp độ theo quy định của Luật An toàn thông tin mạng số 86/2015/QH13 đã được sửa đổi, bổ sung một số điều theo Luật số 35/2018/QH14 thì tiếp tục giữ cấp độ đã được xác định kể từ ngày Luật này có hiệu lực thi hành; trong thời h"
             },
             {
               "rank": 3,
-              "score": 0.622438,
-              "relevant": false,
-              "source": "luat116_ch01.md",
-              "article": "Điều 13",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 13] ### Điều 13 Tấn công mạng là hành vi thực hiện trên không gian mạng bằng việc sử dụng công nghệ thông tin hoặc phương tiện điện tử để chiếm đoạt thông tin, gây rối loạn, tê liệt hoạt động, phá hoại hoạt động kiểm soát hệ thống mạng viễn thông, mạng Inte"
+              "score": 0.611744,
+              "relevant": true,
+              "source": "luat116_ch08.md",
+              "article": "",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] Thay thế cụm từ “an ninh, an toàn thông tin” bằng cụm từ “an ninh” tại điểm a khoản 3 Điều 7 của Luật Tín ngưỡng, tôn giáo số 28/2023/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 84/2025/QH15. 11. Bài bỏ cụm từ “an toàn thông tin mạng;” tại điểm d khoản"
             }
           ]
         },
@@ -489,31 +491,31 @@
           "query": "Theo Điều 7 Luật An ninh mạng 116/2025, hành vi xuyên tạc lịch sử và phủ nhận thành tựu cách mạng có bị nghiêm cấm không?",
           "gold_answer": "Có. Đăng tải, phát tán nội dung xuyên tạc lịch sử hoặc phủ nhận thành tựu cách mạng trên không gian mạng là hành vi bị nghiêm cấm.",
           "metadata_filter": null,
-          "relevant_rank": 2,
+          "relevant_rank": 1,
           "results": [
             {
               "rank": 1,
-              "score": 0.638681,
-              "relevant": false,
-              "source": "luat116_ch01.md",
-              "article": "Điều 13",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 13] ### Điều 13 Tấn công mạng là hành vi thực hiện trên không gian mạng bằng việc sử dụng công nghệ thông tin hoặc phương tiện điện tử để chiếm đoạt thông tin, gây rối loạn, tê liệt hoạt động, phá hoại hoạt động kiểm soát hệ thống mạng viễn thông, mạng Inte"
-            },
-            {
-              "rank": 2,
-              "score": 0.633071,
+              "score": 0.624297,
               "relevant": true,
               "source": "luat116_ch01.md",
               "article": "Điều 7. Các hành vi bị nghiêm cấm về an ninh mạng",
               "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 7. Các hành vi bị nghiêm cấm về an ninh mạng] Hợp tác quốc tế về an ninh mạng được thực hiện trên cơ sở tôn trọng độc lập, chủ quyền, toàn vẹn lãnh thổ, không can thiệp vào công việc nội bộ của nhau, bình đẳng, cùng có lợi và tuân thủ Hiến pháp, pháp luật V"
             },
             {
+              "rank": 2,
+              "score": 0.61576,
+              "relevant": false,
+              "source": "luat116_ch01.md",
+              "article": "Điều 13",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 13] ### Điều 13 Tấn công mạng là hành vi thực hiện trên không gian mạng bằng việc sử dụng công nghệ thông tin hoặc phương tiện điện tử để chiếm đoạt thông tin, gây rối loạn, tê liệt hoạt động, phá hoại hoạt động kiểm soát hệ thống mạng viễn thông, mạng Inte"
+            },
+            {
               "rank": 3,
-              "score": 0.615036,
+              "score": 0.609024,
               "relevant": false,
               "source": "luat116_ch03.md",
-              "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] Hành vi gian dối mạng; xâm phạm bí mật nhà nước, bí mật công tác, bí mật kinh doanh, bí mật cá nhân, bí mật gia đình và đời sống riêng tư trên không gian mạng bao gồm: a) Chiếm đoạt, mua bán, thu giữ, có ý làm lộ thông tin thuộc bí mật nhà nước, bí mật công tác, "
+              "article": "Điều 16.",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 16.] Hành vi gian dối mạng; xâm phạm bí mật nhà nước, bí mật công tác, bí mật kinh doanh, bí mật cá nhân, bí mật gia đình và đời sống riêng tư trên không gian mạng bao gồm: a) Chiếm đoạt, mua bán, thu giữ, có ý làm lộ thông tin thuộc bí mật nhà nước, bí mật"
             }
           ]
         }
@@ -522,12 +524,12 @@
     {
       "strategy": "recursive",
       "parameters": {
-        "chunk_size": 1200
+        "chunk_size": 900
       },
-      "chunk_count": 83,
-      "avg_chunk_length": 1054.92,
-      "max_chunk_length": 1588,
-      "collection_name": "legal-recursive-text-embedding-3-small-1de3a885e315",
+      "chunk_count": 112,
+      "avg_chunk_length": 776.83,
+      "max_chunk_length": 1276,
+      "collection_name": "legal-recursive-text-embedding-3-small-2bc1079cc81c",
       "top3_recall": 1.0,
       "mrr": 1.0,
       "retrieval_score": 10,
@@ -543,27 +545,27 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.630265,
+              "score": 0.648154,
               "relevant": true,
               "source": "81-btc.md",
-              "article": "Điều 2. Giải thích từ ngữ",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 2. Giải thích từ ngữ] Thông tư này quy định việc quản lý, sử dụng tài khoản thanh toán của Kho bạc Nhà nước mở tại Ngân hàng Nhà nước Việt Nam và các ngân hàng thương mại. ### 2. Đối tượng áp dụng a) Kho bạc Nhà nước, bao gồm: Kho bạc Nhà nước (Trung ương) và các Kho "
+              "article": "Điều 3. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại Ngân hàng Nhà nước Việt Nam",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 3. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại Ngân hàng Nhà nước Việt Nam] Là quá trình xử lý các giao dịch thanh toán theo phương thức điện tử giữa Kho bạc Nhà nước với một ngân hàng thương mại theo mô hình tài khoản thanh toán phân tán quy định"
             },
             {
               "rank": 2,
-              "score": 0.531574,
+              "score": 0.552509,
               "relevant": false,
               "source": "81-btc.md",
               "article": "",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] #### 1. Trách nhiệm của Kho bạc Nhà nước * Tổ chức quản lý, vận hành hệ thống thanh toán. * Đảm bảo việc truyền nhận dữ liệu đúng quy định. * Thực hiện đối chiếu, tra soát và xử lý sai sót. #### 2. Trách nhiệm của ngân hàng thương mại * Đảm bảo hạ tầng kỹ thuật phục vụ than"
+              "content_preview": "[Thông tư 81/2025/TT-BTC] b) Những khoản thu phát sinh sau thời điểm COT của ngày làm việc và trong ngày nghỉ, ngày lễ, tết theo quy định trên tài khoản thanh toán của Kho bạc Nhà nước (Trung ương) và Kho bạc Nhà nước khu vực tại ngân hàng thương mại; số dư tài khoản thanh toán của Kho bạc Nhà nước "
             },
             {
               "rank": 3,
-              "score": 0.516822,
+              "score": 0.550802,
               "relevant": false,
               "source": "81-btc.md",
-              "article": "Điều 5. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán phân tán (tiếp)",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 5. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán phân tán (tiếp)] b) Những khoản thu phát sinh sau thời điểm COT của ngày làm việc và trong ngày nghỉ, ngày lễ, tết"
+              "article": "",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] 2. Nguyên tắc đảm bảo khả năng thanh toán. 3. Nguyên tắc phối hợp thu ngân sách nhà nước. 4. Nguyên tắc trao đổi và lưu trữ dữ liệu điện tử. 5. Nguyên tắc đối chiếu và xác nhận số liệu. 6. Nguyên tắc xử lý sai sót và tra soát. 7. Nguyên tắc bảo mật thông tin. 8. Nguyên tắc "
             }
           ]
         },
@@ -576,27 +578,27 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.697619,
+              "score": 0.739226,
               "relevant": true,
               "source": "81-btc.md",
               "article": "",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] c) Xây dựng và thực hiện lộ trình chuyển đổi từ mô hình tài khoản thanh toán phân tán sang mô hình tài khoản thanh toán tập trung phù hợp với yêu cầu quản lý ngân quỹ nhà nước. d) Hoàn thành việc chuyển đổi sang mô hình tài khoản thanh toán tập trung chậm nhất đến ngày **30"
+              "content_preview": "[Thông tư 81/2025/TT-BTC] b) Phối hợp với các ngân hàng thương mại trong việc kết nối, vận hành hệ thống thanh toán song phương điện tử. c) Xây dựng và thực hiện lộ trình chuyển đổi từ mô hình tài khoản thanh toán phân tán sang mô hình tài khoản thanh toán tập trung phù hợp với yêu cầu quản lý ngân "
             },
             {
               "rank": 2,
-              "score": 0.665422,
+              "score": 0.665897,
               "relevant": false,
               "source": "81-btc.md",
-              "article": "Điều 6. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán tập trung",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 6. Quản lý và sử dụng tài khoản thanh toán của Kho bạc Nhà nước tại ngân hàng thương mại thanh toán song phương điện tử theo mô hình tài khoản thanh toán tập trung] Kho bạc Nhà nước thực hiện thanh toán qua các tài khoản thanh toán mở tại ngân hàng thương mại theo quy"
+              "article": "",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] a) Cuối ngày giao dịch, toàn bộ số dư trên tài khoản thanh toán của Kho bạc Nhà nước (Trung ương) và các Kho bạc Nhà nước khu vực tại ngân hàng thương mại được chuyển về tài khoản thanh toán của Kho bạc Nhà nước (Trung ương) tại Sở Giao dịch Ngân hàng Nhà nước Việt Nam (trừ"
             },
             {
               "rank": 3,
-              "score": 0.651877,
+              "score": 0.649289,
               "relevant": false,
               "source": "81-btc.md",
-              "article": "Điều 4. Ngân hàng thương mại nơi Kho bạc Nhà nước mở tài khoản thanh toán",
-              "content_preview": "[Thông tư 81/2025/TT-BTC] [Điều 4. Ngân hàng thương mại nơi Kho bạc Nhà nước mở tài khoản thanh toán] Kho bạc Nhà nước thanh toán qua tài khoản thanh toán của Kho bạc Nhà nước (Trung ương) tại Sở Giao dịch Ngân hàng Nhà nước Việt Nam theo quy định của Thông tư số 08/2024/TT-NHNN ngày 25 tháng 6 năm "
+              "article": "",
+              "content_preview": "[Thông tư 81/2025/TT-BTC] b) Kho bạc Nhà nước khu vực được mở tài khoản thanh toán bằng VND và bằng ngoại tệ (theo loại ngoại tệ phát sinh) tại chi nhánh, phòng giao dịch thuộc cùng ngân hàng thương mại nơi Kho bạc Nhà nước (Trung ương) mở tài khoản thanh toán. ### 2. Nội dung sử dụng tài khoản than"
             }
           ]
         },
@@ -609,27 +611,27 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.654174,
+              "score": 0.72476,
               "relevant": true,
               "source": "luat116_ch03.md",
               "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] 1. Trẻ em có quyền được tiếp cận thông tin, tham gia hoạt động xã hội, vui chơi, giải trí, bảo vệ bí mật cá nhân, đời sống riêng tư và các quyền khác trên không gian mạng theo quy định của pháp luật. 2. Trẻ em sử dụng dịch vụ giá trị gia tăng trên không gian mạng"
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] 2. Trẻ em sử dụng dịch vụ giá trị gia tăng trên không gian mạng thì cha, mẹ hoặc người giám hộ theo quy định của pháp luật về dân sự đứng ký tài khoản bằng thông tin của cha, mẹ hoặc người giám hộ và có trách nhiệm giám sát, quản lý nội dung trẻ em truy cập, đăng"
             },
             {
               "rank": 2,
-              "score": 0.523853,
-              "relevant": false,
-              "source": "luat116_ch07.md",
-              "article": "Điều 40. Trách nhiệm của chủ quản hệ thống thông tin trong bảo vệ an ninh mạng",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 40. Trách nhiệm của chủ quản hệ thống thông tin trong bảo vệ an ninh mạng] # 5. Bộ, cơ quan ngang Bộ, cơ quan thuộc Chính phủ, trong phạm vi chức năng, nhiệm vụ, quyền hạn của mình, thực hiện công tác bảo vệ an ninh mạng; phối hợp với Bộ Công an thực hiện q"
-            },
-            {
-              "rank": 3,
-              "score": 0.496876,
+              "score": 0.524821,
               "relevant": false,
               "source": "luat116_ch03.md",
               "article": "Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng] # 3. Cơ quan, tổ chức soạn thảo, lưu trữ thông tin, tài liệu thuộc bí mật nhà nước có trách nhiệm bảo vệ bí mật nhà nước được soạn thảo, lưu giữ trên máy tính, thiết bị khác hoặc trao đổi trên không gian"
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 16. Phòng, chống xâm hại trẻ em trên không gian mạng] b) Kiểm tra an ninh mạng đối với thiết bị, sản phẩm, dịch vụ thông tin liên lạc, thiết bị kỹ thuật số, thiết bị điện tử trước khi đưa vào sử dụng trong hệ thống thông tin quan trọng về an ninh quốc gia; "
+            },
+            {
+              "rank": 3,
+              "score": 0.494218,
+              "relevant": false,
+              "source": "luat116_ch07.md",
+              "article": "",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] 5. Có trách nhiệm định danh địa chỉ IP của tổ chức, cá nhân sử dụng dịch vụ internet; cung cấp thông tin định danh địa chỉ IP cho lực lượng chuyên trách bảo vệ an ninh mạng để thực hiện biện pháp bảo vệ an ninh mạng. 6. Phối hợp thực hiện theo hướng dẫn của lực l"
             }
           ]
         },
@@ -642,7 +644,7 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.708276,
+              "score": 0.770515,
               "relevant": true,
               "source": "luat116_ch08.md",
               "article": "Điều 44. Hiệu lực thi hành",
@@ -650,7 +652,7 @@
             },
             {
               "rank": 2,
-              "score": 0.677091,
+              "score": 0.676806,
               "relevant": false,
               "source": "luat116_ch08.md",
               "article": "",
@@ -658,11 +660,11 @@
             },
             {
               "rank": 3,
-              "score": 0.581125,
+              "score": 0.606161,
               "relevant": false,
-              "source": "luat116_ch07.md",
+              "source": "luat116_ch02.md",
               "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] 1. Tuân thủ quy định của pháp luật về an ninh mạng. 2. Cảnh báo khả năng mất an ninh mạng trong việc sử dụng dịch vụ trên không gian mạng do mình cung cấp và hướng dẫn biện pháp phòng ngừa đối với người sử dụng dịch vụ; xây dựng phương án ứng cứu khẩn cấp bảo đảm"
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] h) Ứng phó, khắc phục sự cố an ninh mạng đối với hệ thống thông tin."
             }
           ]
         },
@@ -675,7 +677,7 @@
           "results": [
             {
               "rank": 1,
-              "score": 0.70097,
+              "score": 0.701146,
               "relevant": true,
               "source": "luat116_ch01.md",
               "article": "Điều 7. Các hành vi bị nghiêm cấm về an ninh mạng",
@@ -683,19 +685,19 @@
             },
             {
               "rank": 2,
-              "score": 0.619327,
+              "score": 0.678273,
               "relevant": false,
               "source": "luat116_ch01.md",
-              "article": "",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] 1) Hướng dẫn, xúi giục, lôi kéo, kích động người khác phạm tội hoặc thực hiện hành vi vi phạm pháp luật; k) Thực hiện hành vi khác trên không gian mạng bằng việc sử dụng công nghệ thông tin, phương tiện điện tử để vi phạm pháp luật về an ninh quốc gia, trật tự, a"
+              "article": "Điều 12",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 12] ### Điều 12 Tội phạm mạng là hành vi nguy hiểm cho xã hội được quy định trong Bộ luật Hình sự, do cá nhân hoặc tổ chức thực hiện trên không gian mạng bằng việc sử dụng công nghệ thông tin hoặc phương tiện điện tử. ### Điều 13 Tấn công mạng là hành vi th"
             },
             {
               "rank": 3,
-              "score": 0.598998,
+              "score": 0.624893,
               "relevant": false,
-              "source": "luat116_ch01.md",
-              "article": "Điều 14",
-              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] [Điều 14] ### Điều 14 Khung bảo mật là hành vi thực hiện trên không gian mạng bằng việc sử dụng công nghệ thông tin hoặc phương tiện điện tử nhằm gây hoang mang trong công chúng hoặc làm mất ổn định chính trị. ### Điều 15 Gián điệp mạng là hành vi thực hiện trên "
+              "source": "luat116_ch03.md",
+              "article": "",
+              "content_preview": "[Luật An ninh mạng số 116/2025/QH15] e) Xuyên tạc sự thật, gây ảnh hưởng đến danh dự, uy tín, nhãn phẩm của người khác; 4. Các hành vi thực hiện trên không gian mạng bằng việc sử dụng công nghệ thông tin, phương tiện điện tử xâm phạm an ninh quốc gia và trật tự, an toàn xã hội bao gồm: a) Đăng tải, "
             }
           ]
         }

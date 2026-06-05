@@ -1,7 +1,7 @@
 # Báo Cáo Lab 7: Embedding & Vector Store
 
 **Họ tên:** [Vũ Xuân Bách]
-**Nhóm:** [Tên nhóm]
+**Nhóm:** [bàn e2]
 **Ngày:** [5/6/2026]
 
 ---
@@ -130,11 +130,14 @@ metadata["citation"] = "81/2025/TT-BTC:10"
 
 ### So Sánh Với Thành Viên Khác
 
-| Thành viên | Strategy | Retrieval Score (/10) | Điểm mạnh | Điểm yếu |
-|-----------|----------|----------------------|-----------|----------|
-| Tôi | DocumentChunker + citation metadata | 10 | Giữ Điều/Chương, truy vết nguồn tốt | Cần parser sạch và filter khi nhiều Điều gần nghĩa |
-| [Tên] | | | | |
-| [Tên] | | | | |
+| Thành viên | Mã sinh viên | Strategy | Retrieval Score (/10) | MRR | Điểm mạnh | Điểm yếu |
+|-----------|--------------|----------|----------------------:|----:|-----------|----------|
+| **Vũ Xuân Bách** | `2A202600776` | `DocumentChunker` (`chunk_size=1500`) + citation metadata | 10 | 0,90 | Giữ ranh giới Chương/Mục/Điều, citation rõ ràng, phù hợp giải thích và kiểm tra nguồn pháp lý | Cần parser Markdown sạch; các Điều gần nghĩa vẫn có thể cạnh tranh nếu không lọc metadata |
+| **Dương Quang Khải** | `2A202600708` | `FixedSizeChunker` (`1200/100`, ưu tiên ranh giới đoạn) | 10 | **1,00** | Cấu hình đơn giản, số chunk dự đoán được và cả 5 đáp án relevant đều đứng top-1 | Không bảo đảm mỗi chunk tương ứng trọn vẹn với một Điều; metadata Điều có thể bị thiếu nếu điểm cắt nằm giữa văn bản |
+| **Nguyễn Thành Lộc** | `2A202600817` | `SentenceChunker` (6 câu, overlap 1 câu) | 10 | 0,90 | Không cắt ngang câu, overlap giúp giữ mạch lập luận và đạt relevant top-3 cho cả 5 query | Độ dài chunk không đều; query COT có chunk đúng ở top-2 thay vì top-1 |
+| **Đặng Tiến Quyền** | `2A202600896` | `RecursiveChunker` (`chunk_size=900`) | 10 | **1,00** | Cân bằng tốt giữa kích thước và ngữ cảnh, ưu tiên đoạn/dòng trước khi cắt nhỏ; cả 5 query đều relevant ở top-1 | Một chunk vẫn có thể bắt đầu giữa Điều nên khả năng truy vết citation không ổn định bằng DocumentChunker |
+| **Nguyễn Hồng Phúc** | `2A202600843` | `SemanticChunker` (`threshold=0,20`, `max_chunk_size=1500`) | 8 | 0,70 | Tạo chunk nhỏ, tập trung theo quan hệ ngữ nghĩa và cho score cao ở các query diễn đạt tự nhiên | Tạo nhiều chunk nhất; query về xuyên tạc lịch sử không có gold chunk trong top-3, đồng thời tốn thêm embedding khi tạo chunk |
+
 
 **Strategy nào tốt nhất cho domain này? Tại sao?**
 > Trên đúng 5 benchmark queries hiện tại, RecursiveChunker tốt nhất vì cả 5 kết quả relevant đều ở top-1. DocumentChunker cũng đạt 10/10 và phù hợp hơn khi cần giải thích nguồn; metadata filter đã đưa Điều 10 từ ngoài top-3 lên top-1. Vì vậy recursive là baseline hiệu quả nhất, còn document-aware strategy là lựa chọn tốt hơn cho hệ thống pháp lý cần citation và audit.
@@ -200,13 +203,13 @@ Chạy 5 benchmark queries của nhóm trên implementation cá nhân của bạ
 
 ### Benchmark Queries & Gold Answers (nhóm thống nhất)
 
-| # | Query | Gold Answer |
-|---|-------|-------------|
-| 1 | Theo Thông tư 81/2025/TT-BTC, thời điểm COT được quy định vào lúc mấy giờ? | 16 giờ của ngày làm việc theo giờ Việt Nam. |
-| 2 | Theo Điều 10 Thông tư 81/2025/TT-BTC, hạn hoàn thành chuyển đổi sang mô hình tài khoản tập trung là khi nào? | Chậm nhất ngày 30 tháng 6 năm 2028. |
-| 3 | Cha mẹ/người giám hộ có trách nhiệm gì khi trẻ em dùng dịch vụ giá trị gia tăng trên không gian mạng? | Đứng ký tài khoản bằng thông tin của mình và giám sát, quản lý nội dung trẻ truy cập, đăng tải, chia sẻ. |
-| 4 | Luật An ninh mạng số 116/2025 có hiệu lực từ ngày nào? | Ngày 01 tháng 7 năm 2026. |
-| 5 | Theo Điều 7, xuyên tạc lịch sử và phủ nhận thành tựu cách mạng có bị nghiêm cấm không? | Có; đăng tải, phát tán nội dung này trên không gian mạng bị nghiêm cấm. |
+| # | Query | Gold Answer (verify từ luật) | Điều/Chương |
+|---|-------|-------------|---|
+| 1 | An ninh mạng được định nghĩa như thế nào? | Sự ổn định, an ninh, an toàn của không gian mạng; bảo vệ HTTT và bảo đảm thông tin/dữ liệu/hoạt động không gây phương hại đến an ninh quốc gia, trật tự an toàn xã hội | Điều 2.1 / Ch.I |
+| 2 | Luật an ninh mạng áp dụng đối với những đối tượng nào? | Cơ quan/tổ chức/cá nhân Việt Nam; người nước ngoài tại VN & người gốc Việt; cơ quan/tổ chức/cá nhân nước ngoài liên quan hoạt động ANM tại VN | Điều 1.2 / Ch.I |
+| 3 | Các biện pháp bảo vệ an ninh mạng gồm những gì? | Thẩm định ANM; đánh giá điều kiện ANM; kiểm tra ANM; giám sát ANM; ứng phó, khắc phục sự cố ANM… | Điều 5 / Ch.I |
+| 4 | Lực lượng bảo vệ an ninh mạng gồm những thành phần nào? | Lực lượng chuyên trách tại Bộ Công an, Bộ Quốc phòng; lực lượng tại Bộ/ngành/UBND; tổ chức/cá nhân được huy động | Điều 30 / Ch.VI |
+| 5 | Trách nhiệm của cơ quan, tổ chức, cá nhân trong bảo vệ ANM? | Các trách nhiệm cụ thể của cơ quan/tổ chức/cá nhân theo Chương VII | Ch.VII |
 
 ### Kết Quả Của Tôi
 

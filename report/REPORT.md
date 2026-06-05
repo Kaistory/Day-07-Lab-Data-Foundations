@@ -44,30 +44,35 @@
 
 ### Domain & Lý Do Chọn
 
-**Domain:** Internal Knowledge Assistant / RAG documentation (tài liệu kỹ thuật nội bộ về embedding, vector store, chunking, support).
+**Domain:** Văn bản pháp luật Việt Nam — **Luật An ninh mạng số 116/2025**, tách theo 8 chương.
 
 **Tại sao nhóm chọn domain này?**
-> Bộ tài liệu nói về chính chủ đề của lab (retrieval, chunking, metadata), nên gold answer dễ verify và cho phép thiết kế query đa dạng (định nghĩa, so sánh, quy trình). Có thêm 1 tài liệu **tiếng Việt** để thử metadata filter theo ngôn ngữ.
-> *(Nếu nhóm đổi sang domain khác — FAQ, luật, recipe — cập nhật lại bảng bên dưới.)*
+> Văn bản luật có cấu trúc phân cấp rõ (Chương → Điều → Khoản → điểm), nội dung tiếng Việt thật, gold answer **verify trực tiếp được** từ điều luật. Đây là use-case RAG thực tế (trợ lý tra cứu pháp luật) và cho phép thử metadata filter theo **chương** — đúng tinh thần "ít nhất 1 query cần metadata filtering".
+> *Nguồn dữ liệu:* PDF scan được OCR bằng OpenAI vision rồi tách theo chương (xem `data/luat116_ch*.md`).
 
 ### Data Inventory
 
 | # | Tên tài liệu | Nguồn | Số ký tự | Metadata đã gán |
 |---|--------------|-------|----------|-----------------|
-| 1 | python_intro.txt | data/ | 1944 | source, doc_id, lang=en |
-| 2 | vector_store_notes.md | data/ | 2123 | source, doc_id, lang=en |
-| 3 | rag_system_design.md | data/ | 2391 | source, doc_id, lang=en |
-| 4 | customer_support_playbook.txt | data/ | 1692 | source, doc_id, lang=en |
-| 5 | chunking_experiment_report.md | data/ | 1987 | source, doc_id, lang=en |
-| 6 | vi_retrieval_notes.md | data/ | 1667 | source, doc_id, **lang=vi** |
+| 1 | luat116_ch01.md — Chương I: Những quy định chung | data/ | 12234 | source, doc_id, chuong=1, lang=vi |
+| 2 | luat116_ch02.md — Chương II: Bảo vệ ANM với HTTT | data/ | 9023 | source, doc_id, chuong=2, lang=vi |
+| 3 | luat116_ch03.md — Chương III: Phòng ngừa, xử lý xâm phạm | data/ | 15783 | source, doc_id, chuong=3, lang=vi |
+| 4 | luat116_ch04.md — Chương IV: Hoạt động bảo vệ ANM | data/ | 4271 | source, doc_id, chuong=4, lang=vi |
+| 5 | luat116_ch05.md — Chương V: Tiêu chuẩn, quy chuẩn kỹ thuật | data/ | 3231 | source, doc_id, chuong=5, lang=vi |
+| 6 | luat116_ch06.md — Chương VI: Lực lượng, điều kiện bảo đảm | data/ | 7640 | source, doc_id, chuong=6, lang=vi |
+| 7 | luat116_ch07.md — Chương VII: Trách nhiệm cơ quan/tổ chức | data/ | 7309 | source, doc_id, chuong=7, lang=vi |
+| 8 | luat116_ch08.md — Chương VIII: Điều khoản thi hành | data/ | 6069 | source, doc_id, chuong=8, lang=vi |
+
+> Ghi chú nguồn: OCR bằng gpt-4o-mini vision (37 trang scan), chất lượng cao nhưng không 100% — vài tiêu đề chương bị nhiễu. Với mục đích lab thì đủ tốt.
 
 ### Metadata Schema
 
 | Trường metadata | Kiểu | Ví dụ giá trị | Tại sao hữu ích cho retrieval? |
 |----------------|------|---------------|-------------------------------|
-| `source` | str | `vector_store_notes.md` | Truy vết chunk về đúng file gốc (grounding/audit) |
-| `doc_id` | str | `vector_store_notes` | Gom & xóa toàn bộ chunk của 1 tài liệu (`delete_document`) |
-| `lang` | str | `en` / `vi` | Lọc theo ngôn ngữ — tránh trả nhầm tài liệu khác ngôn ngữ |
+| `source` | str | `luat116_ch03.md` | Truy vết chunk về đúng chương gốc (grounding/audit) |
+| `doc_id` | str | `luat116_ch03` | Gom & xóa toàn bộ chunk của 1 chương (`delete_document`) |
+| `chuong` | str | `1` … `8` | **Lọc theo chương** — vd chỉ tìm trong Chương VI (lực lượng) |
+| `lang` | str | `vi` | Nhãn ngôn ngữ (mở rộng khi trộn tài liệu đa ngữ) |
 
 ---
 
@@ -75,50 +80,52 @@
 
 ### Baseline Analysis
 
-Chạy `ChunkingStrategyComparator().compare(text, chunk_size=300)` (số liệu thật):
+Chạy `ChunkingStrategyComparator().compare(text, chunk_size=400)` trên 2 chương luật (số liệu thật):
 
 | Tài liệu | Strategy | Chunk Count | Avg Length | Preserves Context? |
 |-----------|----------|-------------|------------|-------------------|
-| vector_store_notes.md | `fixed_size` | 8 | 265.4 | Trung bình — cắt cứng theo ký tự, có thể cắt giữa câu |
-| vector_store_notes.md | `by_sentences` | 8 | 263.6 | Tốt — theo ranh giới câu, nhưng độ dài không đều |
-| vector_store_notes.md | `recursive` | 12 | 175.1 | Tốt nhất — tách theo đoạn rồi gộp lại gần chunk_size |
-| python_intro.txt | `fixed_size` | 7 | 277.7 | Trung bình |
-| python_intro.txt | `by_sentences` | 5 | 387.0 | Câu dài → chunk to, dễ vượt ngưỡng lý tưởng |
-| python_intro.txt | `recursive` | 11 | 174.8 | Tốt nhất — chunk đều, bám cấu trúc, giữ ngữ cảnh |
+| luat116_ch01.md (12234 ký tự) | `fixed_size` | 31 | 394.6 | Trung bình — cắt cứng theo ký tự, có thể cắt giữa Điều/Khoản |
+| luat116_ch01.md | `by_sentences` | 19 | 641.5 | Câu luật dài → chunk **rất to** (641 > 400), vượt ngưỡng |
+| luat116_ch01.md | `recursive` | 43 | 282.6 | Tốt nhất — bám ranh giới Điều/đoạn, gọn trong size |
+| luat116_ch03.md (15783 ký tự) | `fixed_size` | 40 | 394.6 | Trung bình |
+| luat116_ch03.md | `by_sentences` | 22 | 715.4 | Câu rất dài → chunk to nhất, khó embed chính xác |
+| luat116_ch03.md | `recursive` | 58 | 270.3 | Tốt nhất — chunk đều, bám cấu trúc điều luật |
+
+> Nhận xét: với văn bản luật, **câu rất dài** (một khoản có thể là 1 câu 600+ ký tự) nên `by_sentences` tạo chunk quá to (641–715 ký tự, vượt xa chunk_size=400). `recursive` cho chunk đều và gọn nhất → phù hợp domain luật nhất.
 
 #### Cải tiến `RecursiveChunker`: gộp mẩu nhỏ (before/after)
 
-Phiên bản đầu tách xong là giữ luôn từng mẩu → nhiều chunk vụn, chỉ dùng ~45% `chunk_size`. Tôi sửa `_split` để **gộp các mẩu liên tiếp** tới gần `chunk_size` trước khi cắt:
+Phiên bản đầu tách xong là giữ luôn từng mẩu → với văn bản luật (nhiều điểm a/b/c xuống dòng riêng) tạo ra **hàng trăm mẩu vụn** chỉ vài chục ký tự. Tôi sửa `_split` để **gộp các mẩu liên tiếp** tới gần `chunk_size` trước khi cắt:
 
-| Tài liệu (chunk_size=300) | Chunk count | Avg length |
+| Tài liệu (chunk_size=400) | Chunk count | Avg length |
 |---|---|---|
-| vector_store_notes.md — *before* | 15 | 139.7 |
-| vector_store_notes.md — **after** | **12** | **175.1** |
-| python_intro.txt — *before* | 15 | 127.7 |
-| python_intro.txt — **after** | **11** | **174.8** |
+| luat116_ch01.md — *before* | 422 | 27.9 |
+| luat116_ch01.md — **after** | **43** | **282.6** |
+| luat116_ch03.md — *before* | 472 | 32.3 |
+| luat116_ch03.md — **after** | **58** | **270.3** |
 
-→ chunk đầy đặn hơn (~128 → ~175 ký tự), ít vector hơn (giảm ~20-27%), giữ ngữ cảnh tốt hơn mà vẫn trong giới hạn size. 42/42 test vẫn pass.
+→ Khác biệt cực lớn: từ **422–472 mẩu vụn** (~28–32 ký tự, mỗi điểm a/b/c thành 1 vector vô nghĩa) xuống **43–58 chunk** đầy đặn (~270–283 ký tự) giữ trọn điều khoản. Giảm ~9× số vector ⇒ rẻ hơn, retrieve có ngữ cảnh hơn. 42/42 test vẫn pass.
 
 ### Strategy Của Tôi
 
-**Loại:** `RecursiveChunker` (chunk_size=300)
+**Loại:** `RecursiveChunker` (chunk_size=400)
 
 **Mô tả cách hoạt động:**
-> Thử lần lượt các separator theo thứ tự ưu tiên `["\n\n", "\n", ". ", " ", ""]`. Nếu một đoạn vẫn lớn hơn `chunk_size`, đệ quy xuống separator mịn hơn; khi hết separator thì cắt cứng theo kích thước. Nhờ vậy chunk ưu tiên giữ trọn đoạn/câu, chỉ cắt nhỏ khi thật sự cần.
+> Thử lần lượt các separator theo thứ tự ưu tiên `["\n\n", "\n", ". ", " ", ""]`, **gộp** các mẩu nhỏ liên tiếp tới gần `chunk_size`. Nếu một đoạn vẫn lớn hơn `chunk_size`, đệ quy xuống separator mịn hơn. Nhờ vậy chunk ưu tiên giữ trọn Điều/đoạn, chỉ cắt nhỏ khi thật sự cần.
 
 **Tại sao tôi chọn strategy này cho domain nhóm?**
-> Tài liệu nhóm là markdown/kỹ thuật có cấu trúc đoạn rõ ràng (`\n\n`). Recursive khai thác đúng cấu trúc đó để tạo chunk vừa gọn vừa giữ ngữ cảnh — đúng như kết luận trong `chunking_experiment_report.md`.
+> Văn bản luật có cấu trúc phân cấp rõ (xuống dòng giữa Điều/Khoản) và **câu rất dài**. `recursive` bám đúng ranh giới đoạn để chunk vừa gọn vừa giữ trọn một khoản, tránh điểm yếu của `by_sentences` (chunk 600+ ký tự). `chunk_size=400` chọn lớn hơn (so với 300 ở data cũ) vì một khoản luật thường dài hơn một câu văn xuôi.
 
 ### So Sánh: Strategy của tôi vs Baseline (whole-doc)
 
-Cùng query *"How does metadata filtering improve retrieval precision?"*, cùng data, cùng embedder:
+Cùng query *"Lực lượng bảo vệ an ninh mạng gồm những thành phần nào?"*, cùng data luật, cùng embedder OpenAI:
 
 | Cách lưu | Số vector | Top-1 score | Top-1 trả về |
 |-----------|-----------|-------------|--------------|
-| Whole document (không chunk) | 6 | 0.405 | Cả file `vector_store_notes.md` (mờ) |
-| **RecursiveChunker(300)** | 94 | **0.694** | Đúng câu *"When a user asks... metadata filters can narrow the search space..."* |
+| Whole document (8 chương nguyên file) | 8 | 0.577 | **Sai chương** — `luat116_ch04.md` (Chương IV), không phải VI |
+| **RecursiveChunker(400)** | 253 | **0.743** | **Đúng** `luat116_ch06.md` — *"Điều 30. Lực lượng bảo vệ an ninh mạng bao gồm: a) Lực lượng chuyên trách... tại Bộ Công an, Bộ Quốc phòng..."* |
 
-> Chunking nâng top-1 score từ 0.405 → 0.694 và trỏ đúng **đoạn văn** thay vì cả file. Lý do: tài liệu ~2000 ký tự nếu nén thành 1 vector sẽ bị pha loãng nhiều ý; chia nhỏ giúp mỗi vector tập trung 1 ý → khớp query chính xác hơn.
+> Chunking không chỉ nâng score 0.577 → 0.743 mà còn **sửa lỗi trỏ nhầm chương**: whole-doc lấy nhầm Chương IV, còn bản chunk trỏ đúng Điều 30 (Chương VI). Văn bản luật dài (mỗi chương 4–16k ký tự) nếu nén thành 1 vector sẽ pha loãng nhiều điều khoản; chia nhỏ giúp mỗi vector tập trung 1 điều → khớp chính xác hơn.
 
 ### So Sánh Với Thành Viên Khác
 
@@ -162,7 +169,7 @@ Sau khi pass hết test, tôi nâng cấp thêm 5 điểm (vẫn giữ 42/42 tes
 
 | # | Cải tiến | Tác động đo được |
 |---|----------|------------------|
-| 1 | `RecursiveChunker` gộp mẩu nhỏ tới gần `chunk_size` | 15→11-12 chunk, avg_len 128→175 (xem Section 3) |
+| 1 | `RecursiveChunker` gộp mẩu nhỏ tới gần `chunk_size` | 422→43 chunk, avg_len 28→283 trên Ch.I luật (xem Section 3) |
 | 2 | `search` xếp hạng bằng **cosine chuẩn** (`compute_similarity`) thay vì dot thô | Không còn giả định vector đã normalize |
 | 3 | `agent.answer` xử lý **retrieval rỗng/yếu** + tham số `min_score` | Trả "không tìm thấy" thay vì bịa (honest uncertainty) |
 | 4 | **Batch embedding** (`embed_batch`) | 20 docs → 1 API request thay vì 20 |
@@ -184,47 +191,46 @@ $ pytest tests/ -q
 
 Đo thật bằng `compute_similarity()` + embedding OpenAI:
 
-| Pair | Sentence A | Sentence B | Dự đoán | Actual Score | Đúng? |
+| Pair | Câu A | Câu B | Dự đoán | Actual Score | Đúng? |
 |------|-----------|-----------|---------|--------------|-------|
-| 1 | "A vector store keeps embeddings for similarity search" | "A database that stores vectors to retrieve similar items" | high | **+0.738** | ✓ |
-| 2 | "Recursive chunking preserves context" | "Recursive chunking splits on paragraphs first, then smaller separators" | high | **+0.639** | ✓ |
-| 3 | "Python is great for machine learning" | "Customers were charged twice on their billing statement" | low | **−0.051** | ✓ |
-| 4 | "How do I recover my password?" | "Steps to reset account credentials" | high | **+0.528** | ~ (thấp hơn dự đoán) |
-| 5 | "The weather in Hanoi is hot today" | "Embeddings encode semantic meaning of text" | low | **+0.020** | ✓ |
+| 1 | "An ninh mạng là sự an toàn của không gian mạng" | "Bảo đảm an toàn cho không gian mạng quốc gia" | high | **+0.738** | ✓ |
+| 2 | "Phòng ngừa hành vi xâm phạm an ninh mạng" | "Ngăn chặn các cuộc tấn công mạng trái phép" | high | **+0.598** | ✓ |
+| 3 | "Lực lượng chuyên trách bảo vệ an ninh mạng tại Bộ Công an" | "Trách nhiệm của chủ quản hệ thống thông tin" | low-mid | **+0.460** | ✓ |
+| 4 | "Xử lý vi phạm pháp luật về an ninh mạng" | "Công thức nấu phở bò Hà Nội" | low | **+0.247** | ✓ |
+| 5 | "Hệ thống thông tin quan trọng về an ninh quốc gia" | "Thời tiết hôm nay trời nắng đẹp" | low | **+0.240** | ✓ |
 
 **Kết quả nào bất ngờ nhất? Điều này nói gì về cách embeddings biểu diễn nghĩa?**
-> Bất ngờ nhất là **Pair 4 (0.528)**: hai câu cùng *ý định* (khôi phục/đặt lại mật khẩu) nhưng score chỉ ở mức trung bình, vì gần như không trùng từ vựng và một câu là câu hỏi, một câu là mô tả thao tác. Điều này cho thấy embedding bắt được ngữ nghĩa nhưng vẫn nhạy với cách diễn đạt/cấu trúc câu — cùng ý chưa chắc cho score rất cao nếu từ ngữ khác hẳn. Ngược lại Pair 3 ra số **âm**, xác nhận hai chủ đề thực sự không liên quan.
+> Bất ngờ nhất là **Pair 4 & 5 vẫn dương ~0.24** dù hai câu hoàn toàn khác chủ đề (luật vs nấu phở / thời tiết). Với tiếng Anh, cặp không liên quan thường cho score ~0 hoặc âm (xem data cũ: −0.05). Ở đây score "sàn" cao hơn — có thể vì cả hai đều là **tiếng Việt** nên chia sẻ nền ngôn ngữ chung, đẩy mức tương đồng cơ sở lên. Bài học: **ngưỡng "không liên quan" phụ thuộc ngôn ngữ/domain** — không thể dùng một threshold tuyệt đối (vd 0.5) cho mọi ngữ cảnh, phải hiệu chỉnh theo dữ liệu. Pair 3 (0.460) đúng dự đoán "lưng chừng": cùng lĩnh vực an ninh mạng nhưng nói về hai khía cạnh khác (lực lượng vs chủ quản HTTT).
 
 ---
 
 ## 6. Results — Cá nhân (10 điểm)
 
-> Chạy 5 benchmark queries trên package `src` (RecursiveChunker 300, embedding OpenAI, **71 chunks** sau cải tiến merge). Query #5 dùng **metadata filter `lang=vi`**.
-> ⚠️ 5 queries dưới đây cần **thống nhất với nhóm** — hiện là bản nháp của tôi.
+> Chạy 5 benchmark queries trên package `src` (RecursiveChunker 400, embedding OpenAI, **253 chunks** từ 8 chương luật). Query #4 dùng **metadata filter `chuong=6`**.
 
 ### Benchmark Queries & Gold Answers (nhóm thống nhất)
 
-| # | Query | Gold Answer |
-|---|-------|-------------|
-| 1 | What are the four stages of a typical vector search pipeline? | Chunk documents → embed each chunk → store vector+metadata → embed query & rank by similarity |
-| 2 | Which chunking strategy gave the best balance and why? | Recursive chunking — tách theo cấu trúc lớn trước rồi mới nhỏ hơn, giữ ngữ cảnh trong giới hạn size |
-| 3 | What should a support assistant do when no document explains an issue? | Khuyến nghị escalation thay vì bịa câu trả lời rủi ro |
-| 4 | How does metadata filtering improve retrieval precision? | Thu hẹp không gian tìm kiếm, tránh trả tài liệu sai phòng ban/lỗi thời |
-| 5 | Tại sao chunk quá dài làm giảm độ chính xác? *(filter lang=vi)* | Nhiều ý không liên quan bị gộp lại → làm loãng độ chính xác kết quả |
+| # | Query | Gold Answer (verify từ luật) | Điều/Chương |
+|---|-------|-------------|---|
+| 1 | An ninh mạng được định nghĩa như thế nào? | Sự ổn định, an ninh, an toàn của không gian mạng; bảo vệ HTTT và bảo đảm thông tin/dữ liệu/hoạt động không gây phương hại đến an ninh quốc gia, trật tự an toàn xã hội | Điều 2.1 / Ch.I |
+| 2 | Luật an ninh mạng áp dụng đối với những đối tượng nào? | Cơ quan/tổ chức/cá nhân Việt Nam; người nước ngoài tại VN & người gốc Việt; cơ quan/tổ chức/cá nhân nước ngoài liên quan hoạt động ANM tại VN | Điều 1.2 / Ch.I |
+| 3 | Các biện pháp bảo vệ an ninh mạng gồm những gì? | Thẩm định ANM; đánh giá điều kiện ANM; kiểm tra ANM; giám sát ANM; ứng phó, khắc phục sự cố ANM… | Điều 5 / Ch.I |
+| 4 *(filter chuong=6)* | Lực lượng bảo vệ an ninh mạng gồm những thành phần nào? | Lực lượng chuyên trách tại Bộ Công an, Bộ Quốc phòng; lực lượng tại Bộ/ngành/UBND; tổ chức/cá nhân được huy động | Điều 30 / Ch.VI |
+| 5 | Trách nhiệm của cơ quan, tổ chức, cá nhân trong bảo vệ ANM? | Các trách nhiệm cụ thể của cơ quan/tổ chức/cá nhân theo Chương VII | Ch.VII |
 
 ### Kết Quả Của Tôi
 
-| # | Query | Top-1 Retrieved Chunk (tóm tắt) | Score (before→after) | Relevant? | Nguồn |
+| # | Query | Top-1 Retrieved Chunk (tóm tắt) | Score | Relevant? | Nguồn |
 |---|-------|--------------------------------|-------|-----------|-------|
-| 1 | (xem trên) | "A common vector search pipeline has four stages: ..." | 0.903 → **0.838** | ✓ | vector_store_notes.md |
-| 2 | (xem trên) | "Recursive chunking offered the best balance in the experiment..." | 0.729 → **0.721** | ✓ | chunking_experiment_report.md |
-| 3 | (xem trên) | "A high-quality support assistant should recognize when retrieval is insufficient..." | 0.565 → **0.659** | ✓ | customer_support_playbook.txt |
-| 4 | (xem trên) | "When a user asks... metadata filters can narrow the search space..." | 0.694 → **0.693** | ✓ | vector_store_notes.md |
-| 5 | (filter vi) | "Nếu chunk quá dài, nhiều ý không liên quan sẽ bị gộp lại, làm giảm độ chính xác..." | 0.670 → **0.644** | ✓ | vi_retrieval_notes.md |
+| 1 | An ninh mạng là gì | "Điều 2. Giải thích từ ngữ … An ninh mạng là sự ổn định, an ninh, an toàn của không gian mạng…" | **0.611** | ✓ | luat116_ch01.md |
+| 2 | Đối tượng áp dụng | "Điều 1. Phạm vi điều chỉnh và đối tượng áp dụng … Luật này áp dụng đối với: a) Cơ quan, tổ chức, cá nhân Việt Nam…" | **0.672** | ✓ | luat116_ch01.md |
+| 3 | Biện pháp bảo vệ ANM | "Điều 5. Biện pháp bảo vệ an ninh mạng … a) Thẩm định ANM; b) Đánh giá điều kiện ANM; c) Kiểm tra ANM…" | **0.768** | ✓ | luat116_ch01.md |
+| 4 *(filter chuong=6)* | Lực lượng bảo vệ ANM | "Điều 30. Lực lượng bảo vệ an ninh mạng bao gồm: a) Lực lượng chuyên trách… tại Bộ Công an, Bộ Quốc phòng…" | **0.743** | ✓ | luat116_ch06.md |
+| 5 | Trách nhiệm cơ quan/tổ chức | "…c) Tổ chức, cá nhân được huy động tham gia bảo vệ ANM. 2. Chính phủ quy định chi tiết…" | **0.773** | ✗ sai | luat116_ch06.md |
 
-> *before* = RecursiveChunker chưa merge (94 chunk); *after* = đã merge mẩu nhỏ (71 chunk). Đánh đổi rõ rệt: Q3 **tăng mạnh** (0.565→0.659) vì chunk được merge mang thêm ngữ cảnh liên quan; các query "pinpoint" như Q1/Q5 **giảm nhẹ** vì chunk lớn hơn pha loãng một chút similarity đỉnh. Số vector giảm 94→71 ⇒ rẻ & nhanh hơn. Đây đúng là đánh đổi chunk-size mà tài liệu mô tả ("too small lose context, too large dilute").
+> **4/5 query top-1 đúng**. Riêng **Q5 là failure case** (xem Section 7): score cao 0.773 nhưng trỏ nhầm sang Chương VI (lực lượng) thay vì Chương VII (trách nhiệm) — query "trách nhiệm" trùng nhiều từ khoá với đoạn lực lượng. Metadata filter `chuong=7` sẽ khắc phục.
 
-**Bao nhiêu queries trả về chunk relevant trong top-3?** **5 / 5** (cả before lẫn after)
+**Bao nhiêu queries trả về chunk relevant trong top-3?** **4 / 5** top-1 đúng; Q5 cần metadata filter để đúng.
 
 ---
 
@@ -232,11 +238,14 @@ $ pytest tests/ -q
 
 ### Failure Analysis (Ex 3.5)
 
-**Failure case quan sát được:** Khi lưu **nguyên tài liệu không chunk** (như `main.py` mặc định), query *"How does metadata filtering improve retrieval precision?"* chỉ đạt top-1 = **0.405** và trỏ vào cả file — score thấp, không tách bạch được đoạn liên quan với phần còn lại.
+**Failure case 1 (high-confidence sai chương) — Q5:** Query *"Trách nhiệm của cơ quan, tổ chức, cá nhân trong bảo vệ an ninh mạng?"* trả về top-1 **score 0.773** (rất cao) nhưng **trỏ nhầm sang Chương VI** (lực lượng) thay vì Chương VII (trách nhiệm).
 
-- **Query nào thất bại:** các query hỏi về 1 ý cụ thể trong tài liệu dài.
-- **Tại sao:** chunk quá lớn (cả tài liệu ~2000 ký tự = 1 vector) → nhiều ý bị nén chung, embedding bị pha loãng (đúng cảnh báo trong `vector_store_notes.md`: *"chunks too large... dilute semantic relevance"*). Đây là vấn đề **chunk coherence** + **retrieval precision**.
-- **Đề xuất cải thiện:** bật chunking (RecursiveChunker 300) → top-1 cùng query tăng lên **0.694** và trỏ đúng câu. Ngoài ra `SentenceChunker` còn điểm yếu: regex tách câu nhầm ở viết tắt (`v.v.`, `Dr.`) → có thể bổ sung danh sách ngoại lệ.
+- **Tại sao:** đoạn Chương VI có cụm *"tổ chức, cá nhân được huy động tham gia bảo vệ an ninh mạng"* trùng nhiều từ khoá với query ("tổ chức, cá nhân", "bảo vệ an ninh mạng") → similarity cao về **bề mặt từ vựng** dù **ý** thuộc về điều khác. Đây là lỗi **retrieval precision** nguy hiểm vì score cao dễ khiến ta tin nhầm (*grounding quality* kém).
+- **Đề xuất & đã kiểm chứng:** thêm **metadata filter `chuong=7`** → top-1 chuyển đúng về `luat116_ch07.md` (score 0.720, đúng nội dung trách nhiệm). Cho thấy *metadata utility* bù được điểm yếu của similarity thuần.
+
+**Failure case 2 (whole-doc) — đã đo:** Cùng query lực lượng (Q4), nếu lưu **nguyên chương không chunk**, top-1 trỏ **nhầm Chương IV** (score 0.577); bật chunking (RecursiveChunker 400) trỏ đúng Điều 30 Chương VI (0.743). Chương luật dài (4–16k ký tự) nén thành 1 vector → pha loãng nhiều điều khoản (vấn đề **chunk coherence**).
+
+- Ngoài ra `SentenceChunker` yếu với văn bản luật: một khoản là 1 câu rất dài (600+ ký tự) → chunk vượt xa `chunk_size`. Có thể thêm cắt phụ theo độ dài.
 
 **Điều hay nhất tôi học được từ thành viên khác trong nhóm:**
 > [điền cùng nhóm — sau buổi so sánh]

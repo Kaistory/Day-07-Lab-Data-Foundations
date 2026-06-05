@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -20,12 +21,14 @@ from src.models import Document
 from src.store import EmbeddingStore
 
 SAMPLE_FILES = [
-    "data/python_intro.txt",
-    "data/vector_store_notes.md",
-    "data/rag_system_design.md",
-    "data/customer_support_playbook.txt",
-    "data/chunking_experiment_report.md",
-    "data/vi_retrieval_notes.md",
+    "data/luat116_ch01.md",
+    "data/luat116_ch02.md",
+    "data/luat116_ch03.md",
+    "data/luat116_ch04.md",
+    "data/luat116_ch05.md",
+    "data/luat116_ch06.md",
+    "data/luat116_ch07.md",
+    "data/luat116_ch08.md",
 ]
 
 
@@ -46,12 +49,14 @@ def load_documents_from_files(file_paths: list[str]) -> list[Document]:
             continue
 
         content = path.read_text(encoding="utf-8")
+        metadata = {"source": str(path), "extension": path.suffix.lower()}
+        # Derive a `chuong` (chapter) field for law files like "luat116_ch06".
+        match = re.search(r"_ch(\d+)$", path.stem)
+        if match:
+            metadata["chuong"] = str(int(match.group(1)))
+            metadata["lang"] = "vi"
         documents.append(
-            Document(
-                id=path.stem,
-                content=content,
-                metadata={"source": str(path), "extension": path.suffix.lower()},
-            )
+            Document(id=path.stem, content=content, metadata=metadata)
         )
 
     return documents
